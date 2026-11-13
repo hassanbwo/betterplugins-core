@@ -27,3 +27,26 @@ jobs:
           path: |
             target/*.jar
             !target/original-*.jar
+
+  # After a successful build on main: create the git tag for the version in pom.xml (e.g. 1.0.0),
+  # JitPack builds the library from that tag. Nothing happens if the tag already exists.
+  tag:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Tag the version from pom.xml
+        run: |
+          version=$(grep -m1 -oP '(?<=<version>)[^<]+' pom.xml)
+          if git rev-parse -q --verify "refs/tags/$version" >/dev/null; then
+            echo "Tag $version already exists"
+          else
+            git tag "$version"
+            git push origin "$version"
+            echo "Created tag $version"
+          fi

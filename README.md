@@ -30,5 +30,5 @@ Shade it into the plugin jar and **relocate** it to the plugin's own package (`d
 ## New version
 
 1. Change the code, `mvn verify` (all tests must pass)
-2. Raise `<version>` in `pom.xml`, commit, create a git tag with the same version (e.g. `1.1.0`)
+2. Raise `<version>` in `pom.xml` and push to `main` - after a successful build GitHub Actions creates the git tag (e.g. `1.1.0`) automatically
 3. Raise `betterplugins-core.version` in the plugins
