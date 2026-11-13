@@ -1,0 +1,6 @@
+# JitPack builds this library from the git tag (e.g. 1.0.0). Paper 26.x needs Java 25.
+before_install:
+  - sdk install java 25.0.1-tem
+  - sdk use java 25.0.1-tem
+install:
+  - mvn -B install -DskipTests
